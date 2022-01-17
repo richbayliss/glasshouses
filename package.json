@@ -1,7 +1,10 @@
 {
   "name": "glasshouses",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "People in glasshouses shouldn't throw stones, or errors...",
+  "repository": {
+    "url": "https://github.com/richbayliss/glasshouses"
+  },
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
