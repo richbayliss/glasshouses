@@ -7,6 +7,12 @@ abstract class ResultBase<T, E> {
     unwrap(): T {
         throw new GlasshouseUnwrapError()
     }
+    isOk(): boolean {
+        return this.ok() !== Option.None
+    }
+    isErr(): boolean {
+        return this.err() !== Option.None
+    }
 }
 
 class Ok<T, E = unknown> extends ResultBase<T, E> {

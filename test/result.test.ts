@@ -58,5 +58,17 @@ describe("Unwrapping", () => {
 
         expect(r.unwrap).toThrowError(GlasshouseUnwrapError);
     })
+})
 
+describe("checks", () => {
+    test("isOk()", () => {
+        let r = Ok("Hello World")
+        expect(r.isOk()).toBeTruthy()
+        expect(r.isErr()).toBeFalsy()
+    })
+    test("isErr()", () => {
+        let r = Err("Goodbye World")
+        expect(r.isOk()).toBeFalsy()
+        expect(r.isErr()).toBeTruthy()
+    })
 })
