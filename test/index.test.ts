@@ -21,7 +21,16 @@ describe("Insulation", () => {
     })
 })
 
+const consoleError = console.error
 describe("Glasshouse", () => {
+    beforeAll(() => {
+        console.error = (...args: any) => {}
+    })
+
+    afterAll(() => {
+        console.error = consoleError
+    })
+
     test("main wrapped function throws up", () => {
         return glasshouse(() => {
             throw new Error("Boom! Headshot")
