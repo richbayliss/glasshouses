@@ -102,3 +102,27 @@ describe("Mapping", () => {
         expect(r2.err().unwrap()).toBeTruthy()
     })
 })
+
+describe("match", () => {
+    test("match on Ok()", () => {
+        let r = Ok("Hello")
+
+        let m = r.match({
+            Ok: (word) => word === "Hello",
+            Err: () => false,
+        })
+
+        expect(m).toBeTruthy()
+    })
+
+    test("match on Err()", () => {
+        let r = Err("Bye")
+
+        let m = r.match({
+            Err: (word) => word === "Bye",
+            Ok: () => false,
+        })
+
+        expect(m).toBeTruthy()
+    })
+})

@@ -1,6 +1,11 @@
 import { GlasshouseUnwrapError } from '.'
 import { Option } from './option'
 
+type ResultMatch<T, E, R> = {
+    Ok: (value: T) => R,
+    Err: (err: E) => R,
+}
+
 abstract class ResultBase<T, E> {
     abstract ok(): Option<T>
     abstract err(): Option<E>
@@ -15,6 +20,7 @@ abstract class ResultBase<T, E> {
     }
     abstract map<U>(fn: (ok: T) => U): Result<U, E>;
     abstract mapErr<F>(fn: (err: E) => F): Result<T, F>;
+    abstract match<R>(matches: ResultMatch<T,E,R>): R;
 }
 
 class Ok<T, E = unknown> extends ResultBase<T, E> {
@@ -44,6 +50,10 @@ class Ok<T, E = unknown> extends ResultBase<T, E> {
     override mapErr<F>(fn: (err: E) => F): Result<T, F> {
         return new Ok<T, F>(this._ok)
     }
+
+    override match<R>(matches: ResultMatch<T, E, R>): R {
+        return matches.Ok(this._ok)
+    }
 }
 
 class Err<E, T = unknown> extends ResultBase<T, E> {
@@ -68,6 +78,10 @@ class Err<E, T = unknown> extends ResultBase<T, E> {
     override mapErr<F>(fn: (err: E) => F): Result<T, F> {
         let f = fn(this._err)
         return new Err(f)
+    }
+
+    override match<R>(matches: ResultMatch<T, E, R>): R {
+        return matches.Err(this._err)
     }
 }
 
