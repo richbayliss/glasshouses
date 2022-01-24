@@ -13,6 +13,7 @@ abstract class ResultBase<T, E> {
     isErr(): boolean {
         return this.err() !== Option.None
     }
+    abstract map<U>(fn: (ok: T) => U): Result<U, E>;
 }
 
 class Ok<T, E = unknown> extends ResultBase<T, E> {
@@ -33,6 +34,11 @@ class Ok<T, E = unknown> extends ResultBase<T, E> {
     override unwrap(): T {
         return this._ok
     }
+
+    override map<U>(fn: (ok: T) => U): Result<U, E> {
+        let u = fn(this._ok)
+        return new Ok(u)
+    }
 }
 
 class Err<E, T = unknown> extends ResultBase<T, E> {
@@ -49,9 +55,13 @@ class Err<E, T = unknown> extends ResultBase<T, E> {
     err(): Option<E> {
         return Option.Some(this._err)
     }
+
+    override map<U>(fn: (ok: T) => U): Result<U, E> {
+        return new Err<E, U>(this._err)
+    }
 }
 
-export type Result<T, E> = Ok<T> | Err<E>
+export type Result<T, E> = Ok<T, E> | Err<E, T>
 
 export const Result = {
     Ok: <T>(ok: T): Result<T, any> => {
@@ -61,18 +71,3 @@ export const Result = {
         return new Err(err)
     }
 }
-
-
-/**
- * Return a successful result with the value provided.
- * 
- * @param ok The value to return
- * @returns [[`Result`]]
- */
-/**
- * Return a failed result with the error provided.
- * 
- * @param err The error to return
- * @returns [[`Result`]]
- */
-

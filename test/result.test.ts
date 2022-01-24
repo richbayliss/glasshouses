@@ -72,3 +72,21 @@ describe("checks", () => {
         expect(r.isErr()).toBeTruthy()
     })
 })
+
+describe("Mapping", () => {
+    test("Map Ok(T) to Ok(U)", () => {
+        let r = Ok("Hello")
+        let r2 = r.map(t => t === "Hello" ? true : false)
+
+        expect(r2.unwrap()).toBeTruthy()
+    })
+
+    test("Map Ok(T) to Ok(T)", () => {
+        let r = Err("Boom")
+        let r2 = r.map(t => t === "Hello" ? true : false)
+
+        expect(r2.isErr()).toBeTruthy()
+        expect(r2.err().unwrap()).toEqual("Boom")
+        expect(r2.isOk()).toBeFalsy()
+    })
+})
