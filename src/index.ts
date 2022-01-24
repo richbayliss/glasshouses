@@ -1,6 +1,7 @@
 export * from './errors'
 export * from './result'
 export * from './option'
+export * from './enum'
 
 import { exit } from 'process'
 import { GlasshouseError } from './errors'
