@@ -1,6 +1,12 @@
 import { GlasshouseUnwrapError } from "."
 
 abstract class OptionBase<T> {
+    isSome(): boolean {
+        return false;
+    }
+    isNone(): boolean {
+        return true;
+    }
     unwrap(): T {
         throw new GlasshouseUnwrapError()
     }
@@ -17,6 +23,14 @@ class Some<T> extends OptionBase<T> {
         private value: T
     ) {
         super()
+    }
+
+    override isNone(): boolean {
+        return false
+    }
+
+    override isSome(): boolean {
+        return true
     }
 
     unwrap(): T {

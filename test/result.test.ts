@@ -78,7 +78,9 @@ describe("Mapping", () => {
         let r = Ok("Hello")
         let r2 = r.map(t => t === "Hello" ? true : false)
 
+        expect(r2.err().isNone()).toBeTruthy()
         expect(r2.unwrap()).toBeTruthy()
+
     })
 
     test("Map Ok(T) to Ok(T)", () => {
@@ -86,6 +88,7 @@ describe("Mapping", () => {
         let r2 = r.map(t => t === "Hello" ? true : false)
 
         expect(r2.isErr()).toBeTruthy()
+        expect(r2.err().isSome()).toBeTruthy()
         expect(r2.err().unwrap()).toEqual("Boom")
         expect(r2.isOk()).toBeFalsy()
     })
