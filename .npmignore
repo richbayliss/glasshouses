@@ -1,4 +1,5 @@
 src/
 test/
+dist/test/
 tsconfig.json
 babel.config.js
