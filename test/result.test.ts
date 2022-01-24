@@ -92,4 +92,13 @@ describe("Mapping", () => {
         expect(r2.err().unwrap()).toEqual("Boom")
         expect(r2.isOk()).toBeFalsy()
     })
+
+    test("Map Err(E) to Err(F)", () => {
+        let r = Err("Boom")
+        let r2 = r.mapErr(e => e === "Boom" ? true : false)
+
+        expect(r2.isErr()).toBeTruthy()
+        expect(r2.err().isSome()).toBeTruthy()
+        expect(r2.err().unwrap()).toBeTruthy()
+    })
 })

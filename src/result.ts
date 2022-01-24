@@ -14,6 +14,7 @@ abstract class ResultBase<T, E> {
         return this.err() !== Option.None
     }
     abstract map<U>(fn: (ok: T) => U): Result<U, E>;
+    abstract mapErr<F>(fn: (err: E) => F): Result<T, F>;
 }
 
 class Ok<T, E = unknown> extends ResultBase<T, E> {
@@ -39,6 +40,10 @@ class Ok<T, E = unknown> extends ResultBase<T, E> {
         let u = fn(this._ok)
         return new Ok(u)
     }
+
+    override mapErr<F>(fn: (err: E) => F): Result<T, F> {
+        return new Ok<T, F>(this._ok)
+    }
 }
 
 class Err<E, T = unknown> extends ResultBase<T, E> {
@@ -58,6 +63,11 @@ class Err<E, T = unknown> extends ResultBase<T, E> {
 
     override map<U>(fn: (ok: T) => U): Result<U, E> {
         return new Err<E, U>(this._err)
+    }
+
+    override mapErr<F>(fn: (err: E) => F): Result<T, F> {
+        let f = fn(this._err)
+        return new Err(f)
     }
 }
 
