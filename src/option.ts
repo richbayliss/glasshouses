@@ -1,5 +1,10 @@
 import { GlasshouseUnwrapError } from "."
 
+type OptionMatch<T, R> = {
+    None: () => R,
+    Some: (value: T) => R,
+}
+
 abstract class OptionBase<T> {
     isSome(): boolean {
         return false;
@@ -10,11 +15,16 @@ abstract class OptionBase<T> {
     unwrap(): T {
         throw new GlasshouseUnwrapError()
     }
+    abstract match<R>(branches: OptionMatch<T, R>): R
 }
 
 class None extends OptionBase<unknown> {
     constructor() {
         super()
+    }
+
+    override match<R>(branches: OptionMatch<unknown, R>): R {
+        return branches.None()
     }
 }
 
@@ -35,6 +45,10 @@ class Some<T> extends OptionBase<T> {
 
     unwrap(): T {
         return this.value
+    }
+
+    override match<R>(branches: OptionMatch<T, R>): R {
+        return branches.Some(this.value)
     }
 }
 

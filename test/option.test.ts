@@ -19,5 +19,27 @@ describe("Option", () => {
         expect(o.isSome()).toBeTruthy()
         expect(o.isNone()).toBeFalsy()
     })
+
+    test("match on None", () => {
+        let o = None
+
+        let m = o.match({
+            None: () => true,
+            Some: (_) => false,
+        })
+
+        expect(m).toBeTruthy()
+    })
+
+    test("match on Some", () => {
+        let o = Some("Hello")
+
+        let m = o.match({
+            None: () => false,
+            Some: (word) => word === "Hello",
+        })
+
+        expect(m).toBeTruthy()
+    })
 })
 
